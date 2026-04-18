@@ -13,13 +13,14 @@ const PORT = 6969;
 // Middleware
 app.use(express.json());
 app.use(logger("dev"));
-app.use("/uploads", express.static("uploads"));
 
 // Auth
 app.use("/api/auth", authRouter);
 
 // CRUD
 app.use("/api/products", productRouter);
+app.use("/uploads", express.static("uploads"));
+
 app.use("/api/customers", customerRouter);
 app.use("/api/orders", orderRouter);
 
