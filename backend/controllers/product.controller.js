@@ -8,7 +8,8 @@ const {
 // POST /products/add
 const create = async (req, res) => {
   try {
-    const { prodName, image, price, stock, description } = req.body;
+    const { prodName, price, stock, description } = req.body;
+    const image = req.file ? req.file.filename : null;
 
     const result = await createProduct(
       prodName,
@@ -46,7 +47,8 @@ const getAll = async (req, res) => {
 // PUT /products/edit/:id
 const update = async (req, res) => {
   try {
-    const { prodName, image, price, stock, description } = req.body;
+    const { prodName, price, stock, description } = req.body;
+    const image = req.file ? req.file.filename : null;
     const { id } = req.params;
 
     const rows = await updateProduct(

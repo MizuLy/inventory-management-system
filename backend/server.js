@@ -1,4 +1,5 @@
 const express = require("express");
+const logger = require("morgan");
 
 const authRouter = require("./routes/auth.routes");
 
@@ -9,7 +10,10 @@ const orderRouter = require("./routes/order.routes");
 const app = express();
 const PORT = 6969;
 
+// Middleware
 app.use(express.json());
+app.use(logger("dev"));
+app.use("/uploads", express.static("uploads"));
 
 // Auth
 app.use("/api/auth", authRouter);
