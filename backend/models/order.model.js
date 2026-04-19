@@ -32,6 +32,11 @@ const createOrder = async (customer_id, items) => {
           item.price * item.quantity,
         ],
       );
+
+      await db.query("UPDATE products SET stock = stock - ? WHERE id = ?", [
+        item.quantity,
+        item.product_id,
+      ]);
     }
 
     return order.insertId;
