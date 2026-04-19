@@ -25,6 +25,46 @@ export default {
           jade: "#0f1f1a",
           charcoal: "#1a1f1a",
         },
+        coffee: {
+          base: "#3B1F0A", // dark espresso bg
+          surface: "#F5F0E8", // cream card bg
+          terracotta: "#C47B4E", // warm accent
+          rose: "#C49A8A", // dusty rose
+          olive: "#6B7C5C", // natural green
+          teal: "#2A7C74", // bold CTA / highlight
+          gold: "#C49A2A", // honey/amber badge
+          text: "#2C1A0E", // dark warm text
+          muted: "#8C7B6E", // subtle secondary text
+          border: "#D6C9B8", // warm neutral border
+        },
+        nord: {
+          // Polar Night (Darks)
+          900: "#2E3440", // nord0
+          800: "#3B4252", // nord1
+          700: "#434C5E", // nord2
+          600: "#4C566A", // nord3
+
+          // Snow Storm (Lights/Text)
+          400: "#D8DEE9", // nord4
+          300: "#E5E9F0", // nord5
+          200: "#ECEFF4", // nord6 (purest white)
+
+          // Frost (Primary Accents)
+          frost: "#88C0D0", // nord8 (light blue)
+          frostDark: "#81A1C1", // nord9 (medium blue)
+          frostDeep: "#5E81AC", // nord10 (dark blue)
+          frostIce: "#8FBCBB", // nord7 (cyan/teal)
+
+          // Aurora (Status Colors)
+          red: "#BF616A", // nord11
+          orange: "#D08770", // nord12
+          yellow: "#EBCB8B", // nord13
+          green: "#A3BE8C", // nord14
+          purple: "#B48EAD", // nord15
+
+          // Semantic Aliases
+          white: "#ECEFF4",
+        },
       },
     },
   },

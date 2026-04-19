@@ -1,14 +1,38 @@
-import React from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+
+import MainLayout from "./layouts/MainLayout";
+
+import AuthLayout from "./layouts/AuthLayout";
+import ProtectedRoute from "./routes/ProtectedRoute";
+
+import Login from "./pages/auth/Login";
+import Logout from "./pages/auth/Logout";
+
+import Dashboard from "./pages/Dashboard";
+import Products from "./pages/Products";
+import Orders from "./pages/Orders";
+import Customers from "./pages/Customers";
+import Settings from "./pages/Settings";
 
 export default function App() {
   return (
-    <div className="w-full h-screen flex flex-col justify-center items-center">
-      <button
-        onClick={() => console.log("Hehe")}
-        className="bg-white/5 border border-white/10 backdrop-blur-md h-[64px] rounded-full px-6 md:px-8 flex justify-between items-center shadow-2xl outline-none"
-      >
-        Hehe
-      </button>
-    </div>
+    <Routes>
+      <Route element={<AuthLayout />}>
+        <Route path="/" element={<Navigate to={"/login"} />} />
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
+      </Route>
+
+      <Route element={<ProtectedRoute />}>
+        <Route element={<MainLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/customers" element={<Customers />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 }
