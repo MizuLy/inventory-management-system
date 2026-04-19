@@ -8,12 +8,16 @@ import {
   LuChevronRight,
   LuX,
   LuSave,
+  LuSquirrel,
 } from "react-icons/lu";
+
 import { getProducts, createProduct, deleteProduct } from "../api/products";
+
 import AddProductModal from "../components/AddProductModal";
+import ConfirmDelete from "../components/ConfirmDelete";
+
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import ConfirmDelete from "../components/ConfirmDelete";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -33,38 +37,6 @@ export default function Products() {
     } catch (err) {
       console.error("Failed to fetch products:", err);
     }
-  };
-
-  const [formData, setFormData] = useState({
-    image: "",
-    prodName: "",
-    price: "",
-    stock: "",
-    description: "",
-  });
-
-  // ====Create====
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const res = await createProduct(formData);
-
-      // if success then close
-      closeModal();
-      fetchProducts();
-      // if (refreshProducts) refreshProducts(); // Call the fetch function from Products.jsx
-      toast.success("Product added successfully!");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
 
   // ====DELETE====
@@ -165,7 +137,7 @@ export default function Products() {
                   {/* Image Cell */}
                   <td className="px-6 py-4">
                     <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border border-nord-100 text-nord-600 group-hover:scale-110 transition-transform duration-200">
-                      <MdOutlineInventory2 size={24} />
+                      <LuSquirrel size={24} />
                     </div>
                   </td>
 

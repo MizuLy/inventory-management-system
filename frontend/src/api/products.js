@@ -5,6 +5,7 @@ const API = "http://localhost:6969/api/products";
 const token = localStorage.getItem("token");
 const headers = { Authorization: `Bearer ${token}` };
 
+export const UPLOAD_URL = "http://localhost:6969/uploads";
 export const getProducts = () => axios.get(API, { headers });
 export const createProduct = (data) => axios.post(API, data, { headers });
 export const updateProduct = (id, data) =>

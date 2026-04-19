@@ -23,7 +23,6 @@ export default function ConfirmDelete({ id, onConfirm }) {
           <button></button>
         </form>
       </dialog>
-      ;
     </>
   );
 }
