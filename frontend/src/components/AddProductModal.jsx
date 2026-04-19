@@ -129,14 +129,14 @@ export default function AddProductModal({ refreshProducts }) {
               <button
                 type="button"
                 onClick={closeModal}
-                className="btn btn-ghost text-nord-600 font-bold uppercase tracking-widest text-xs"
+                className="btn btn-ghost text-nord-600 font-bold uppercase tracking-widest text-xs focus:outline-none"
               >
                 Cancel
               </button>
 
               <button
                 type="submit"
-                className="btn bg-nord-frost border-none text-white font-bold px-8 rounded-xl hover:brightness-110 shadow-lg shadow-nord-frost/20"
+                className="btn bg-nord-frost border-none text-white font-bold px-8 rounded-xl hover:brightness-110 shadow-lg shadow-nord-frost/20 focus:outline-none"
               >
                 <LuSave size={18} />
                 Save Product
