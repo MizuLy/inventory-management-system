@@ -8,7 +8,7 @@ import {
   LuChevronRight,
   LuX,
   LuSave,
-  LuSquirrel,
+  LuLoaderPinwheel,
 } from "react-icons/lu";
 
 import { getProducts, createProduct, deleteProduct } from "../api/products";
@@ -137,7 +137,10 @@ export default function Products() {
                   {/* Image Cell */}
                   <td className="px-6 py-4">
                     <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border border-nord-100 text-nord-600 group-hover:scale-110 transition-transform duration-200">
-                      <LuSquirrel size={24} />
+                      <LuLoaderPinwheel
+                        className="hover:animate-spin"
+                        size={24}
+                      />
                     </div>
                   </td>
 
