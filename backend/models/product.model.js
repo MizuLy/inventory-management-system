@@ -17,7 +17,9 @@ const createProduct = async (prodName, image, price, stock, description) => {
 // GET /products
 const getProduct = async () => {
   try {
-    const [result] = await db.query("SELECT * FROM products");
+    const [result] = await db.query(
+      "SELECT * FROM products ORDER BY created_at DESC",
+    );
 
     return result;
   } catch (err) {
