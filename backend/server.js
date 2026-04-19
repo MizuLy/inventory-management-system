@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const logger = require("morgan");
 
 const authRouter = require("./routes/auth.routes");
@@ -13,6 +14,7 @@ const PORT = 6969;
 // Middleware
 app.use(express.json());
 app.use(logger("dev"));
+app.use(cors());
 
 // Auth
 app.use("/api/auth", authRouter);
