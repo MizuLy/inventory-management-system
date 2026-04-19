@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 // Importing eye icons for the toggle
 import { LuEye, LuEyeOff } from "react-icons/lu";
-
-const API = "http://localhost:6969/api/auth/login";
+import { login } from "../../api/auth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -18,7 +16,7 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(API, { email, password });
+      const res = await login({ email, password });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/dashboard");
