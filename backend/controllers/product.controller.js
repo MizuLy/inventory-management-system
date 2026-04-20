@@ -9,7 +9,7 @@ const {
 const create = async (req, res) => {
   try {
     const { prodName, price, stock, description } = req.body;
-    const image = req.file ? req.file.filename : null;
+    const image = req.file ? req.file.secure_url : null;
 
     const result = await createProduct(
       prodName,
@@ -48,7 +48,7 @@ const getAll = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { prodName, price, stock, description } = req.body;
-    const image = req.file ? req.file.filename : null;
+    const image = req.file ? req.file.secure_url : null;
     const { id } = req.params;
 
     const rows = await updateProduct(

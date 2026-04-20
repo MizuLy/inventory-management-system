@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const logger = require("morgan");
+const rateLimit = require("express-rate-limit");
 
 const authRouter = require("./routes/auth.routes");
 
@@ -11,13 +12,21 @@ const orderRouter = require("./routes/order.routes");
 const app = express();
 const PORT = 6969;
 
+// Rate Limit
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { message: "Too many requests, try again later." },
+});
+
 // Middleware
-app.use(express.json());
 app.use(logger("dev"));
-app.use(cors());
+app.use(cors({ origin: "http://localhost:5173" }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 // Auth
-app.use("/api/auth", authRouter);
+app.use("/api/auth", limiter, authRouter);
 
 // CRUD
 app.use("/api/products", productRouter);
