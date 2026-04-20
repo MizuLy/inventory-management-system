@@ -9,7 +9,7 @@ export default function ConfirmDelete({ id, onConfirm }) {
             Are you sure you want to delete?
           </h3>
           <p className="pb-4">
-            By clicking on confirm, the item will be deleted permanently.
+            By clicking on confirm, the data will be deleted permanently.
           </p>
 
           <button

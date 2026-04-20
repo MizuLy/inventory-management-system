@@ -13,7 +13,7 @@ import {
 
 import { getProducts, createProduct, deleteProduct } from "../api/products";
 
-import AddProductModal from "../components/AddProductModal";
+import ProductModal from "../components/ProductModal";
 import ConfirmDelete from "../components/ConfirmDelete";
 
 import { useEffect, useState } from "react";
@@ -24,6 +24,14 @@ export default function Products() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [selectedId, setSelectedId] = useState(null);
+  const [edit, setEdit] = useState(null);
+  const [formData, setFormData] = useState({
+    image: "",
+    prodName: "",
+    price: "",
+    stock: "",
+    description: "",
+  });
 
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,6 +44,23 @@ export default function Products() {
       setProducts(res.data);
     } catch (err) {
       console.error("Failed to fetch products:", err);
+    }
+  };
+
+  // ===Edit===
+  const handleUpdate = async (p) => {
+    try {
+      setFormData({
+        image: p.image,
+        prodName: p.prodName,
+        price: p.price,
+        stock: p.stock,
+        description: p.description,
+      });
+
+      setEdit(p.id);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -58,11 +83,6 @@ export default function Products() {
   const filteredProducts = products.filter((p) =>
     p.prodName.toLowerCase().includes(searchTerm.toLowerCase()),
   );
-
-  // Function to close modal manually if needed
-  const closeModal = () => {
-    document.getElementById("product_modal").close();
-  };
 
   // Pagination Logic
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -136,11 +156,23 @@ export default function Products() {
                 >
                   {/* Image Cell */}
                   <td className="px-6 py-4">
-                    <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border border-nord-100 text-nord-600 group-hover:scale-110 transition-transform duration-200">
-                      <LuLoaderPinwheel
-                        className="hover:animate-spin"
-                        size={24}
-                      />
+                    <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border border-nord-100 text-nord-600 group-hover:scale-110 transition-transform duration-200 overflow-hidden">
+                      {p.image ? (
+                        <img
+                          src={
+                            p.image.startsWith("data:")
+                              ? p.image
+                              : `http://localhost:6969/uploads/${p.image}`
+                          }
+                          alt={p.prodName}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <MdOutlineInventory2
+                          className="text-nord-200"
+                          size={28}
+                        />
+                      )}
                     </div>
                   </td>
 
@@ -175,7 +207,13 @@ export default function Products() {
                   {/* Actions Cell (Hidden until hover) */}
                   <td className="px-6 py-4">
                     <div className="flex justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <button className="p-2 text-nord-600 hover:text-nord-frost transition-colors">
+                      <button
+                        onClick={(e) => {
+                          handleUpdate(p);
+                          document.getElementById("product_modal").showModal();
+                        }}
+                        className="p-2 text-nord-600 hover:text-nord-frost transition-colors"
+                      >
                         <LuPencil size={18} />
                       </button>
                       <button
@@ -251,7 +289,13 @@ export default function Products() {
       </div>
 
       {/* Product Modal */}
-      <AddProductModal refreshProducts={fetchProducts} />
+      <ProductModal
+        refreshProducts={fetchProducts}
+        edit={edit}
+        setEdit={setEdit}
+        formData={formData}
+        setFormData={setFormData}
+      />
 
       {/* Confirm delete modal */}
       <ConfirmDelete id={selectedId} onConfirm={handleDelete} />
