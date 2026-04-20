@@ -160,7 +160,7 @@ export default function Products() {
                       {p.image ? (
                         <img
                           src={
-                            p.image.startsWith("data:")
+                            p.image.startsWith("http")
                               ? p.image
                               : `http://localhost:6969/uploads/${p.image}`
                           }
