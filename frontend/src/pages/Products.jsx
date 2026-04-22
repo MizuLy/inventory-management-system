@@ -11,18 +11,25 @@ import {
   LuLoaderPinwheel,
 } from "react-icons/lu";
 
-import { getProducts, createProduct, deleteProduct } from "../api/products";
+import {
+  getProducts,
+  createProduct,
+  deleteProduct,
+  UPLOAD_URL,
+} from "../api/products";
 
 import ProductModal from "../components/ProductModal";
 import ConfirmDelete from "../components/ConfirmDelete";
 
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import ImagePopUp from "../components/ImagePopUp";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [selectedImage, setSelectedImage] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const [edit, setEdit] = useState(null);
   const [formData, setFormData] = useState({
@@ -156,11 +163,20 @@ export default function Products() {
                 >
                   {/* Image Cell */}
                   <td className="px-6 py-4">
-                    <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border border-nord-100 text-nord-600 group-hover:scale-110 transition-transform duration-200 overflow-hidden">
+                    <div
+                      onClick={() => {
+                        const src = p.image?.startsWith("http")
+                          ? p.image
+                          : `http://localhost:6969/uploads/${p.image}`;
+                        setSelectedImage(src);
+                        document.getElementById("image_modal").showModal();
+                      }}
+                      className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border border-nord-100 text-nord-600 group-hover:scale-110 transition-transform duration-200 overflow-hidden cursor-pointer"
+                    >
                       {p.image ? (
                         <img
                           src={
-                            p.image.startsWith("http")
+                            p.image?.startsWith("http")
                               ? p.image
                               : `http://localhost:6969/uploads/${p.image}`
                           }
@@ -296,6 +312,8 @@ export default function Products() {
         formData={formData}
         setFormData={setFormData}
       />
+
+      <ImagePopUp image={selectedImage} />
 
       {/* Confirm delete modal */}
       <ConfirmDelete id={selectedId} onConfirm={handleDelete} />
