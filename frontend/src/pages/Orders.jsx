@@ -1,18 +1,22 @@
 import { TbUsersGroup } from "react-icons/tb";
 import {
   LuSearch,
-  LuPencil,
-  LuTrash2,
   LuChevronLeft,
   LuChevronRight,
+  LuPlus,
 } from "react-icons/lu";
+import { CgDetailsMore } from "react-icons/cg";
+
 import "cally";
 import { useEffect, useState } from "react";
-import { getOrders } from "../api/orders";
+import { getOrders, updateStatus } from "../api/orders";
+import ReceiptModal from "../components/ReceiptModal";
+import OrderModal from "../components/OrderModal";
 
 export default function Customers() {
   const [orders, setOrders] = useState([]);
   const [search, setSearch] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,11 +31,26 @@ export default function Customers() {
     }
   };
 
+  const handleStatus = async (id, status) => {
+    try {
+      await updateStatus(id, status);
+      fetchOrders();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleReceipt = async (id) => {
+    try {
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchOrders();
   }, []);
 
-  // Filter Logic
   const handleSearch = orders.filter((o) => {
     return Object.values(o)
       .join(" ")
@@ -45,21 +64,43 @@ export default function Customers() {
   const currentItems = handleSearch.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(handleSearch.length / itemsPerPage);
 
+  // Helper for status badge colors
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Completed":
+        return "bg-nord-green/20 text-nord-green";
+      case "Cancelled":
+        return "bg-nord-red/20 text-nord-red";
+      default:
+        return "bg-nord-yellow/20 text-nord-yellow";
+    }
+  };
+
   return (
     <div className="w-full">
       {/* Header Section */}
       <div className="flex items-center justify-between mb-10">
         <div className="flex items-center gap-3 font-belanosima text-3xl text-nord-900">
-          <TbUsersGroup className="text-nord-yellow" />
+          <div className="p-2 bg-nord-yellow/10 rounded-lg">
+            <TbUsersGroup className="text-nord-yellow" />
+          </div>
           <span>Orders</span>
         </div>
+
+        <button
+          onClick={() => document.getElementById("order_modal").showModal()}
+          className="flex items-center gap-2 px-6 py-2 bg-nord-yellow text-white font-bold rounded-full hover:opacity-90 transition active:scale-95 shadow-md"
+        >
+          <LuPlus size={20} />
+          <span>Add Customer</span>
+        </button>
       </div>
 
       {/* Search & Filter Bar */}
       <div className="flex items-center gap-4 mb-8">
-        <div className="relative flex-1 max-w-md">
+        <div className="relative flex-1 max-w-md group">
           <LuSearch
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-nord-600"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-nord-600 group-focus-within:text-nord-yellow transition-colors"
             size={18}
           />
           <input
@@ -67,14 +108,13 @@ export default function Customers() {
             placeholder="Search for orders..."
             value={search}
             onChange={(e) => {
-              setSearch(e.target.value);
+              setSearchTerm(e.target.value);
               setCurrentPage(1);
             }}
-            className="w-full pl-12 pr-4 py-2 bg-white border border-nord-100 rounded-xl outline-none focus:border-nord-yelltext-nord-yellow transition shadow-sm"
+            className="w-full pl-12 pr-4 py-2 bg-white border border-nord-100 rounded-xl outline-none focus:border-nord-yellow transition shadow-sm"
           />
         </div>
 
-        {/* Cally Date Picker */}
         <div className="relative">
           <button
             popoverTarget="cally-popover1"
@@ -128,7 +168,9 @@ export default function Customers() {
               <th className="px-6 py-4 w-1/4">Customer</th>
               <th className="px-6 py-4 w-1/3">Items Summary</th>
               <th className="px-6 py-4 w-32">Total Price</th>
-              <th className="px-6 py-4 text-center w-32">Actions</th>
+              <th className="px-6 py-4 w-44">Date & Time</th>
+              <th className="px-6 py-4 w-36">Status</th>
+              <th className="px-6 py-4 text-center w-24">Actions</th>
             </tr>
           </thead>
 
@@ -139,11 +181,10 @@ export default function Customers() {
                   key={o.id}
                   className={`
                     group transition-all duration-200
-                    ${(index + 1) % 2 === 0 ? "bg-white" : "bg-nord-yelltext-nord-yellow/5"} 
-                    hover:bg-nord-yelltext-nord-yellow/10
+                    ${(index + 1) % 2 === 0 ? "bg-white" : "bg-nord-yellow/5"} 
+                    hover:bg-nord-yellow/10
                   `}
                 >
-                  {/* Customer Cell */}
                   <td className="px-6 py-4">
                     <div className="font-semibold text-nord-800 truncate">
                       {o.cusName || "Unknown Customer"}
@@ -153,7 +194,6 @@ export default function Customers() {
                     </div>
                   </td>
 
-                  {/* Items Cell */}
                   <td className="px-6 py-4">
                     <div className="text-sm text-nord-600 space-y-1">
                       {o.items?.map((item, i) => (
@@ -167,19 +207,59 @@ export default function Customers() {
                     </div>
                   </td>
 
-                  {/* Price Cell */}
                   <td className="px-6 py-4 text-nord-yellow font-black italic">
-                    ${o.totalPrice}
+                    ${Number(o.totalPrice).toLocaleString()}
                   </td>
 
-                  {/* Actions Cell */}
+                  <td className="px-6 py-4 text-xs text-nord-500 leading-relaxed font-medium">
+                    {new Date(o.created_at).toLocaleDateString()} <br />
+                    <span className="text-nord-400">
+                      {new Date(o.created_at).toLocaleTimeString()}
+                    </span>
+                  </td>
+
                   <td className="px-6 py-4">
-                    <div className="flex justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <button className="p-2 text-nord-600 hover:text-nord-yellow transition-colors">
-                        <LuPencil size={18} />
-                      </button>
-                      <button className="p-2 text-nord-600 hover:text-nord-red transition-colors">
-                        <LuTrash2 size={18} />
+                    <div className="dropdown dropdown-bottom dropdown-end">
+                      <div
+                        tabIndex={0}
+                        role="button"
+                        className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider transition-all active:scale-95 ${getStatusColor(o.status)}`}
+                      >
+                        {o.status}
+                      </div>
+                      <ul
+                        tabIndex={0}
+                        className="dropdown-content menu bg-white rounded-xl z-20 w-40 p-2 shadow-xl border border-nord-100 mt-2"
+                      >
+                        <li onClick={() => handleStatus(o.id, "Pending")}>
+                          <a className="text-nord-yellow hover:bg-nord-yellow/10">
+                            Pending
+                          </a>
+                        </li>
+                        <li onClick={() => handleStatus(o.id, "Completed")}>
+                          <a className="text-nord-green hover:bg-nord-green/10">
+                            Completed
+                          </a>
+                        </li>
+                        <li onClick={() => handleStatus(o.id, "Cancelled")}>
+                          <a className="text-nord-red hover:bg-nord-red/10">
+                            Cancelled
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+
+                  <td className="px-6 py-4 text-center">
+                    <div className="flex justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => {
+                          setSelectedId(o.id);
+                          document.getElementById("receipt_modal").showModal();
+                        }}
+                        className="p-2 text-nord-600 hover:text-nord-yellow hover:bg-white rounded-lg transition-all"
+                      >
+                        <CgDetailsMore size={20} />
                       </button>
                     </div>
                   </td>
@@ -188,7 +268,7 @@ export default function Customers() {
             ) : (
               <tr>
                 <td
-                  colSpan="4"
+                  colSpan="6"
                   className="px-6 py-20 text-center text-nord-400 italic"
                 >
                   No orders found in the system.
@@ -198,7 +278,7 @@ export default function Customers() {
           </tbody>
         </table>
 
-        {/* Pagination Bar */}
+        {/* Pagination */}
         <div className="px-6 py-4 bg-nord-50/50 border-t border-nord-100 flex items-center justify-between">
           <p className="text-xs text-nord-600 font-bold uppercase tracking-tighter">
             Showing {indexOfFirstItem + 1}-
@@ -222,7 +302,7 @@ export default function Customers() {
                   onClick={() => setCurrentPage(i + 1)}
                   className={`w-8 h-8 rounded-lg text-xs font-black transition-all ${
                     currentPage === i + 1
-                      ? "bg-nord-yelltext-nord-yellow text-white"
+                      ? "bg-nord-yellow text-white"
                       : "hover:bg-white text-nord-600"
                   }`}
                 >
@@ -243,6 +323,9 @@ export default function Customers() {
           </div>
         </div>
       </div>
+
+      <OrderModal />
+      <ReceiptModal id={selectedId} />
     </div>
   );
 }

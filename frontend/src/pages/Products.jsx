@@ -204,7 +204,7 @@ export default function Products() {
 
                   {/* Price Cell */}
                   <td className="px-6 py-4 text-matcha-deep font-bold italic">
-                    ${p.price}
+                    ${Number(p.price).toLocaleString()}
                   </td>
 
                   {/* Stock Cell */}

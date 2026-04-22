@@ -13,3 +13,7 @@
 body {
   @apply font-instrumentsans;
 }
+
+html {
+  scrollbar-gutter: stable;
+}
