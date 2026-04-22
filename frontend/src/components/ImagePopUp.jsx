@@ -5,13 +5,12 @@ export default function ImagePopUp({ image }) {
     <>
       <dialog id="image_modal" className="modal">
         <div className="modal-box flex justify-center items-center">
-          <img src={image} alt="" />
+          <img src={image} className="w-full rounded-xl" />
         </div>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>
         </form>
       </dialog>
-      ;
     </>
   );
 }
