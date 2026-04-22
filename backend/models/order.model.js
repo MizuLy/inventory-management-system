@@ -58,7 +58,7 @@ const getOrders = async () => {
   try {
     const [orders] = await db.query(
       `
-  SELECT o.id, o.totalPrice, o.created_at, c.cusName
+  SELECT o.id, o.totalPrice, o.created_at, o.status, c.cusName
   FROM orders o
   JOIN customers c ON o.customer_id = c.id
   ORDER BY o.created_at DESC
@@ -85,7 +85,13 @@ const getOrders = async () => {
 // Get orders by id
 const getOrderId = async (id) => {
   try {
-    const [result] = await db.query("SELECT * FROM orders WHERE id=?", [id]);
+    const [result] = await db.query(
+      `SELECT o.id, o.totalPrice, o.created_at, o.status, c.cusName
+       FROM orders o
+       JOIN customers c ON o.customer_id = c.id
+       WHERE o.id = ?`,
+      [id],
+    );
 
     if (result.length === 0) return null;
 
