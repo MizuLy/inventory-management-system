@@ -103,4 +103,17 @@ const getOrderId = async (id) => {
   }
 };
 
-module.exports = { createOrder, getOrders, getOrderId };
+const updateOrderStatus = async (status, id) => {
+  try {
+    const [rows] = await db.query("UPDATE orders SET status=? WHERE id=?", [
+      status,
+      id,
+    ]);
+
+    return rows;
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports = { createOrder, getOrders, getOrderId, updateOrderStatus };

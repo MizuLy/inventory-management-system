@@ -1,4 +1,9 @@
-const { createOrder, getOrders, getOrderId } = require("../models/order.model");
+const {
+  createOrder,
+  getOrders,
+  getOrderId,
+  updateOrderStatus,
+} = require("../models/order.model");
 
 // Create order
 const create = async (req, res) => {
@@ -40,4 +45,18 @@ const getById = async (req, res) => {
   }
 };
 
-module.exports = { create, getAll, getById };
+// Update Status
+const updateStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const rows = await updateOrderStatus(status, id);
+
+    res.status(200).json({ message: "Status updated to: ", status });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+module.exports = { create, getAll, getById, updateStatus };
