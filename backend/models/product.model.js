@@ -29,18 +29,27 @@ const getProduct = async () => {
 
 // PUT /products/edit/:id
 const updateProduct = async (
-  id,
   prodName,
   image,
   price,
   stock,
   description,
+  id,
 ) => {
   try {
-    const [rows] = await db.query(
-      "UPDATE products SET prodName = ?, image = ?, price = ?, stock = ?, description = ? WHERE id = ?",
-      [id, prodName, image, price, stock, description],
-    );
+    let query, params;
+
+    if (image) {
+      query =
+        "UPDATE products SET prodName=?, image=?, price=?, stock=?, description=? WHERE id=?";
+      params = [prodName, image, price, stock, description, id];
+    } else {
+      query =
+        "UPDATE products SET prodName=?, price=?, stock=?, description=? WHERE id=?";
+      params = [prodName, price, stock, description, id];
+    }
+
+    const [rows] = await db.query(query, params);
 
     if (rows.affectedRows === 0) return null;
 

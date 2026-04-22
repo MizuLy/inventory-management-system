@@ -7,10 +7,18 @@ const createOrder = async (customer_id, items) => {
 
     // fetch price from DB for each item
     for (const item of items) {
-      const [rows] = await db.query("SELECT price FROM products WHERE id=?", [
-        item.product_id,
-      ]);
-      const price = rows[0].price;
+      const [rows] = await db.query(
+        "SELECT price, stock FROM products WHERE id=?",
+        [item.product_id],
+      );
+
+      const product = rows[0];
+
+      if (product.stock < item.quantity) {
+        throw new Error(`Not enough stock for product ${item.product_id}`);
+      }
+
+      const price = product.price;
       totalPrice += price * item.quantity;
       item.price = price; // attach real price to item
     }
@@ -49,7 +57,12 @@ const createOrder = async (customer_id, items) => {
 const getOrders = async () => {
   try {
     const [orders] = await db.query(
-      "SELECT * FROM orders ORDER BY created_at DESC",
+      `
+  SELECT o.id, o.totalPrice, o.created_at, c.cusName
+  FROM orders o
+  JOIN customers c ON o.customer_id = c.id
+  ORDER BY o.created_at DESC
+`,
     );
 
     for (const order of orders) {
