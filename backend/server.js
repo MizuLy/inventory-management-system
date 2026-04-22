@@ -26,7 +26,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 // Auth
-app.use("/api/auth", limiter, authRouter);
+app.use("/api/auth", authRouter);
 
 // CRUD
 app.use("/api/products", productRouter);
