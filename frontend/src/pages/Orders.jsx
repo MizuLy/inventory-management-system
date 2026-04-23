@@ -10,6 +10,7 @@ import { FiRefreshCw } from "react-icons/fi";
 
 import "cally";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { getOrders, updateStatus } from "../api/orders";
 import ReceiptModal from "../components/ReceiptModal";
 import OrderModal from "../components/OrderModal";
@@ -36,15 +37,11 @@ export default function Customers() {
   const handleStatus = async (id, status) => {
     try {
       await updateStatus(id, status);
+      toast.success(`Status changed to ${status}`);
       fetchOrders();
+      document.activeElement.blur();
     } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleReceipt = async (id) => {
-    try {
-    } catch (err) {
+      toast.error("Failed to change status");
       console.error(err);
     }
   };
@@ -86,6 +83,7 @@ export default function Customers() {
 
   return (
     <div className="w-full">
+      <Toaster position="top-right" />
       {/* Header Section */}
       <div className="flex items-center justify-between mb-10">
         <div className="flex items-center gap-3 font-belanosima text-3xl text-nord-900">
@@ -100,7 +98,7 @@ export default function Customers() {
           className="flex items-center gap-2 px-6 py-2 bg-nord-yellow text-white font-bold rounded-full hover:opacity-90 transition active:scale-95 shadow-md"
         >
           <LuPlus size={20} />
-          <span>Add Customer</span>
+          <span>Add Order</span>
         </button>
       </div>
 
@@ -342,7 +340,7 @@ export default function Customers() {
         </div>
       </div>
 
-      <OrderModal />
+      <OrderModal refreshOrders={fetchOrders} />
       <ReceiptModal id={selectedId} />
     </div>
   );

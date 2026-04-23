@@ -16,10 +16,10 @@ export default function CustomerModal({
     try {
       if (edit) {
         await updateCustomer(edit, formData);
-        toast.success("Customer edited successfully!");
+        toast.success("Customer info edited successfully!");
       } else {
         await createCustomer(formData);
-        toast.success("Customer added successfully!");
+        toast.success("Customer info added successfully!");
       }
 
       // if success then close
