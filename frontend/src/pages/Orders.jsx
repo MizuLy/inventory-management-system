@@ -6,6 +6,7 @@ import {
   LuPlus,
 } from "react-icons/lu";
 import { CgDetailsMore } from "react-icons/cg";
+import { FiRefreshCw } from "react-icons/fi";
 
 import "cally";
 import { useEffect, useState } from "react";
@@ -17,6 +18,7 @@ export default function Customers() {
   const [orders, setOrders] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,10 +54,16 @@ export default function Customers() {
   }, []);
 
   const handleSearch = orders.filter((o) => {
-    return Object.values(o)
+    const matchesSearch = Object.values(o)
       .join(" ")
       .toLowerCase()
       .includes(search.toLowerCase());
+
+    const matchesDate = selectedDate
+      ? new Date(o.created_at).toLocaleDateString("en-CA") === selectedDate
+      : true;
+
+    return matchesSearch && matchesDate;
   });
 
   // Pagination Logic
@@ -108,7 +116,7 @@ export default function Customers() {
             placeholder="Search for orders..."
             value={search}
             onChange={(e) => {
-              setSearchTerm(e.target.value);
+              setSearch(e.target.value);
               setCurrentPage(1);
             }}
             className="w-full pl-12 pr-4 py-2 bg-white border border-nord-100 rounded-xl outline-none focus:border-nord-yellow transition shadow-sm"
@@ -133,7 +141,9 @@ export default function Customers() {
             <calendar-date
               className="cally"
               onchange={(e) => {
-                document.getElementById("cally1").innerText = e.target.value;
+                const date = e.target.value;
+                document.getElementById("cally1").innerText = date;
+                setSelectedDate(date);
               }}
             >
               <svg
@@ -158,6 +168,14 @@ export default function Customers() {
             </calendar-date>
           </div>
         </div>
+        <button
+          onClick={() => location.reload()}
+          className="p-3 bg-white rounded-xl shadow-sm border border-nord-100 active:scale-95 transition-transform"
+        >
+          <div className="hover:rotate-180 hover:scale-110 transition-all duration-300 flex items-center justify-center text-nord-600">
+            <FiRefreshCw size={18} />
+          </div>
+        </button>
       </div>
 
       {/* Table Container */}

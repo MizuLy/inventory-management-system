@@ -111,6 +111,26 @@ const getOrderId = async (id) => {
 
 const updateOrderStatus = async (status, id) => {
   try {
+    // get current status first
+    const [current] = await db.query("SELECT status FROM orders WHERE id = ?", [
+      id,
+    ]);
+
+    // if cancelling, restore stock
+    if (status === "Cancelled") {
+      const [items] = await db.query(
+        "SELECT product_id, quantity FROM order_items WHERE order_id = ?",
+        [id],
+      );
+
+      for (const item of items) {
+        await db.query("UPDATE products SET stock = stock + ? WHERE id = ?", [
+          item.quantity,
+          item.product_id,
+        ]);
+      }
+    }
+
     const [rows] = await db.query("UPDATE orders SET status=? WHERE id=?", [
       status,
       id,
