@@ -56,7 +56,9 @@ export default function Dashboard() {
       {/* Header Section - Matching Product Style */}
       <div className="flex items-center justify-between mb-10">
         <div className="flex items-center gap-3 font-belanosima text-3xl text-nord-900">
-          <LuLayoutDashboard className="text-nord-frost" />
+          <div className="p-2 rounded-lg">
+            <LuLayoutDashboard className="text-nord-frost" />
+          </div>
           <span>Dashboard</span>
         </div>
 

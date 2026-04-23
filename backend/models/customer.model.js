@@ -17,7 +17,9 @@ const createCustomer = async (cusName, email, phone, gender) => {
 // GET /customers
 const getCustomers = async () => {
   try {
-    const [result] = await db.query("SELECT * FROM customers");
+    const [result] = await db.query(
+      "SELECT * FROM customers ORDER BY created_at DESC",
+    );
 
     return result;
   } catch (err) {

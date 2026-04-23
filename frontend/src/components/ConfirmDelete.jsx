@@ -14,7 +14,7 @@ export default function ConfirmDelete({ id, onConfirm }) {
 
           <button
             onClick={() => onConfirm(id)}
-            className="px-4 py-2 rounded-lg text-white bg-nord-red hover:bg-nord-purple"
+            className="px-4 py-2 rounded-lg text-white bg-nord-frost hover:bg-nord-frost"
           >
             Confirm
           </button>

@@ -1,4 +1,4 @@
-import { TbUsersGroup } from "react-icons/tb";
+import { PiStack } from "react-icons/pi";
 import {
   LuSearch,
   LuChevronLeft,
@@ -87,15 +87,15 @@ export default function Customers() {
       {/* Header Section */}
       <div className="flex items-center justify-between mb-10">
         <div className="flex items-center gap-3 font-belanosima text-3xl text-nord-900">
-          <div className="p-2 bg-nord-yellow/10 rounded-lg">
-            <TbUsersGroup className="text-nord-yellow" />
+          <div className="p-2 rounded-lg">
+            <PiStack className="text-nord-frost" />
           </div>
           <span>Orders</span>
         </div>
 
         <button
           onClick={() => document.getElementById("order_modal").showModal()}
-          className="flex items-center gap-2 px-6 py-2 bg-nord-yellow text-white font-bold rounded-full hover:opacity-90 transition active:scale-95 shadow-md"
+          className="flex items-center gap-2 px-6 py-2 bg-nord-frost text-white font-bold rounded-full hover:opacity-90 transition active:scale-95 shadow-md"
         >
           <LuPlus size={20} />
           <span>Add Order</span>
@@ -106,7 +106,7 @@ export default function Customers() {
       <div className="flex items-center gap-4 mb-8">
         <div className="relative flex-1 max-w-md group">
           <LuSearch
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-nord-600 group-focus-within:text-nord-yellow transition-colors"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-nord-600 group-focus-within:text-nord-green transition-colors"
             size={18}
           />
           <input
@@ -197,8 +197,8 @@ export default function Customers() {
                   key={o.id}
                   className={`
                     group transition-all duration-200
-                    ${(index + 1) % 2 === 0 ? "bg-white" : "bg-nord-yellow/5"} 
-                    hover:bg-nord-yellow/10
+                    ${(index + 1) % 2 === 0 ? "bg-white" : "bg-nord-frost/5"} 
+                    hover:bg-nord-frost/10
                   `}
                 >
                   <td className="px-6 py-4">
@@ -214,7 +214,7 @@ export default function Customers() {
                     <div className="text-sm text-nord-600 space-y-1">
                       {o.items?.map((item, i) => (
                         <div key={i} className="truncate line-clamp-1">
-                          <span className="font-bold text-nord-yellow">
+                          <span className="font-bold text-nord-green">
                             x{item.quantity}
                           </span>{" "}
                           {item.prodName}
@@ -223,7 +223,7 @@ export default function Customers() {
                     </div>
                   </td>
 
-                  <td className="px-6 py-4 text-nord-yellow font-black italic">
+                  <td className="px-6 py-4 text-nord-green font-black italic">
                     ${Number(o.totalPrice).toLocaleString()}
                   </td>
 
@@ -258,7 +258,7 @@ export default function Customers() {
                           </a>
                         </li>
                         <li onClick={() => handleStatus(o.id, "Cancelled")}>
-                          <a className="text-nord-red hover:bg-nord-red/10">
+                          <a className="text-nord-red hover:bg-nord-frost/10">
                             Cancelled
                           </a>
                         </li>
@@ -273,7 +273,7 @@ export default function Customers() {
                           setSelectedId(o.id);
                           document.getElementById("receipt_modal").showModal();
                         }}
-                        className="p-2 text-nord-600 hover:text-nord-yellow hover:bg-white rounded-lg transition-all"
+                        className="p-2 text-nord-600 hover:text-nord-green hover:bg-white rounded-lg transition-all"
                       >
                         <CgDetailsMore size={20} />
                       </button>
@@ -318,7 +318,7 @@ export default function Customers() {
                   onClick={() => setCurrentPage(i + 1)}
                   className={`w-8 h-8 rounded-lg text-xs font-black transition-all ${
                     currentPage === i + 1
-                      ? "bg-nord-yellow text-white"
+                      ? "bg-nord-frost text-white"
                       : "hover:bg-white text-nord-600"
                   }`}
                 >

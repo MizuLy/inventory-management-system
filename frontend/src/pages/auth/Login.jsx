@@ -6,7 +6,7 @@ import {
   LuLock,
   LuMail,
   LuLoader,
-  LuArrowBigRightDash,
+  LuArrowRight,
 } from "react-icons/lu";
 import { login } from "../../api/auth";
 
@@ -34,82 +34,87 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#050505] relative overflow-hidden p-4 font-instrumentsans">
-      {/* Sunset Horizon Glow - Bottom Light Source */}
-      <div className="absolute bottom-0 left-0 right-0 h-[60vh] bg-gradient-to-t from-orange-600/20 via-red-900/10 to-transparent pointer-events-none"></div>
+    <div className="min-h-screen flex items-center justify-center bg-nord-50 p-4 font-belanosima relative overflow-hidden">
+      {/* Subtle Top Glow */}
+      <div className="absolute top-0 left-0 right-0 h-80 bg-gradient-to-b from-nord-frost/20 to-transparent pointer-events-none"></div>
 
-      {/* The "Setting Sun" Bloom */}
-      <div className="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-[1200px] h-[500px] bg-orange-500 opacity-[0.08] blur-[140px] rounded-full pointer-events-none"></div>
-
-      {/* Floating Card */}
       <div className="w-full max-w-md z-10">
-        <div className="bg-[#0D0D0D]/60 backdrop-blur-3xl border border-white/5 p-10 rounded-[2.5rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.8)]">
+        <div className="bg-white border border-nord-200 p-10 rounded-[2.5rem] shadow-xl shadow-nord-900/5">
           <div className="text-center mb-10">
-            <h1 className="font-belanosima text-4xl text-white mb-2 tracking-tighter">
+            <h1 className="text-5xl text-nord-900 mb-2 tracking-tighter">
               KS GROUP
             </h1>
-            <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] font-black">
-              End of Day Authentication
+            <p className="text-nord-800 text-[11px] uppercase tracking-[0.4em] font-black opacity-70">
+              Admin Portal Access
             </p>
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit}>
+            {/* Identity / Email */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-orange-500/60 ml-1">
+              <label className="text-[11px] font-black uppercase tracking-widest text-nord-800 ml-1">
                 Identity
               </label>
-              <div className="relative group">
-                <LuMail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-orange-500 transition-colors" />
+              <div className="relative group font-sans">
+                <LuMail className="absolute left-4 top-1/2 -translate-y-1/2 text-nord-400 group-focus-within:text-nord-frost transition-colors" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="admin@ks.com"
-                  className="w-full pl-12 pr-4 py-3.5 bg-white/[0.02] border border-white/10 rounded-2xl text-white outline-none focus:border-orange-500/50 focus:bg-white/[0.05] transition-all"
+                  className="w-full pl-12 pr-4 py-4 bg-nord-50 border border-nord-200 rounded-2xl text-nord-900 font-bold outline-none focus:border-nord-frost focus:bg-white transition-all placeholder:text-nord-400"
                 />
               </div>
             </div>
 
+            {/* Credential / Password */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-orange-500/60 ml-1">
+              <label className="text-[11px] font-black uppercase tracking-widest text-nord-800 ml-1">
                 Credential
               </label>
-              <div className="relative group">
-                <LuLock className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-orange-500 transition-colors" />
+              <div className="relative group font-sans">
+                <LuLock className="absolute left-4 top-1/2 -translate-y-1/2 text-nord-400 group-focus-within:text-nord-frost transition-colors" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   placeholder="••••••••"
-                  className="w-full pl-12 pr-12 py-3.5 bg-white/[0.02] border border-white/10 rounded-2xl text-white outline-none focus:border-orange-500/50 focus:bg-white/[0.05] transition-all"
+                  className="w-full pl-12 pr-12 py-4 bg-nord-50 border border-nord-200 rounded-2xl text-nord-900 font-bold outline-none focus:border-nord-frost focus:bg-white transition-all placeholder:text-nord-400"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-nord-400 hover:text-nord-900 transition"
                 >
-                  {showPassword ? <LuEyeOff size={18} /> : <LuEye size={18} />}
+                  {showPassword ? <LuEyeOff size={20} /> : <LuEye size={20} />}
                 </button>
               </div>
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 rounded-2xl font-black text-white bg-gradient-to-r from-orange-600 to-red-600 hover:brightness-110 active:scale-[0.97] transition-all shadow-lg shadow-orange-900/20 flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-4 rounded-2xl font-black text-white bg-nord-frost hover:brightness-95 active:scale-[0.98] transition-all shadow-lg shadow-nord-frost/30 flex items-center justify-center gap-2 disabled:opacity-50 mt-4"
             >
               {loading ? (
                 <LuLoader className="animate-spin" size={20} />
               ) : (
                 <div className="flex items-center gap-2 uppercase tracking-widest text-xs">
-                  <span>Login</span>
-                  <LuArrowBigRightDash size={20} />
+                  <span>Sign In</span>
+                  <LuArrowRight size={20} />
                 </div>
               )}
             </button>
           </form>
+
+          <div className="mt-12 text-center pt-6 border-t border-nord-100">
+            <p className="text-nord-900 text-[10px] uppercase tracking-[0.3em] font-black opacity-40">
+              Secure Environment v2.0
+            </p>
+          </div>
         </div>
       </div>
     </div>

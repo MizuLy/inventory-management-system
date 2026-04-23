@@ -106,7 +106,9 @@ export default function Products() {
       {/* Header Section */}
       <div className="flex items-center justify-between mb-10">
         <div className="flex items-center gap-3 font-belanosima text-3xl text-nord-900">
-          <MdOutlineInventory2 className="text-nord-frost" />
+          <div className="p-2 rounded-lg">
+            <MdOutlineInventory2 className="text-nord-frost" />
+          </div>
           <span>Products</span>
         </div>
 

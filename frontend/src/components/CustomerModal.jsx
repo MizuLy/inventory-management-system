@@ -146,7 +146,7 @@ export default function CustomerModal({
 
               <button
                 type="submit"
-                className="btn bg-nord-purple border-none text-white font-bold px-8 rounded-xl hover:brightness-110 shadow-lg shadow-nord-frost/20 focus:outline-none"
+                className="btn bg-nord-frost border-none text-white font-bold px-8 rounded-xl hover:brightness-110 shadow-lg shadow-nord-frost/20 focus:outline-none"
               >
                 <LuSave size={18} />
                 Save Customer

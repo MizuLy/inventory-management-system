@@ -94,13 +94,15 @@ export default function Customers() {
       {/* Header Section - Matches Products Size */}
       <div className="flex items-center justify-between mb-10">
         <div className="flex items-center gap-3 font-belanosima text-3xl text-nord-900">
-          <TbUsersGroup className="text-nord-purple" />
+          <div className="p-2 rounded-lg">
+            <TbUsersGroup className="text-nord-frost" />
+          </div>
           <span>Customers</span>
         </div>
 
         <button
           onClick={() => document.getElementById("customer_modal").showModal()}
-          className="flex items-center gap-2 px-6 py-2 bg-nord-purple text-white font-bold rounded-full hover:opacity-90 transition active:scale-95 shadow-md"
+          className="flex items-center gap-2 px-6 py-2 bg-nord-frost text-white font-bold rounded-full hover:opacity-90 transition active:scale-95 shadow-md"
         >
           <LuPlus size={20} />
           <span>Add Customer</span>
@@ -147,8 +149,8 @@ export default function Customers() {
                   key={c.id}
                   className={`
                     group transition-all duration-200
-                    ${(index + 1) % 2 === 0 ? "bg-white" : "bg-nord-purple/5"} 
-                    hover:bg-nord-purple/10
+                    ${(index + 1) % 2 === 0 ? "bg-white" : "bg-nord-frost/5"} 
+                    hover:bg-nord-frost/10
                   `}
                 >
                   {/* Name Cell */}
@@ -246,7 +248,7 @@ export default function Customers() {
                   onClick={() => setCurrentPage(i + 1)}
                   className={`w-8 h-8 rounded-lg text-xs font-black transition-all ${
                     currentPage === i + 1
-                      ? "bg-nord-purple text-white"
+                      ? "bg-nord-frost text-white"
                       : "hover:bg-white text-nord-600"
                   }`}
                 >
